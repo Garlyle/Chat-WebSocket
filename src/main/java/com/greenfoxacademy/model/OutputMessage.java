@@ -1,5 +1,8 @@
 package com.greenfoxacademy.model;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /*
@@ -11,16 +14,15 @@ public class OutputMessage
 {
   private String from;
   private String message;
-  private String topic;
-  private Date time = new Date();
+  private String time;
 
   public OutputMessage() {}
 
-  public OutputMessage(String from,String message,String topic)
+  public OutputMessage(String from,String message)
   {
     this.from = from;
     this.message = message;
-    this.topic = topic;
+    this.time = new SimpleDateFormat("HH:mm:ss").format(new Date());
   }
 
   public String getFrom()
@@ -43,17 +45,7 @@ public class OutputMessage
     this.message = message;
   }
 
-  public String getTopic()
-  {
-    return topic;
-  }
-
-  public void setTopic(String topic)
-  {
-    this.topic = topic;
-  }
-
-  public Date getTime()
+  public String getTime()
   {
     return time;
   }

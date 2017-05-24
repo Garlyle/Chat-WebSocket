@@ -3,14 +3,13 @@ $(function() {
 
     var client;
 
-    function showMessage(mesg)
+    function showMessage(msg)
     {
-	$('#messages').append('<tr>' +
-			      '<td>' + mesg.from + '</td>' +
-			      '<td>' + mesg.topic + '</td>' +
-			      '<td>' + mesg.message + '</td>' +
-			      '<td>' + mesg.time + '</td>' +
-			      '</tr>');
+		$('#messages').append('<tr>' +
+			   		  '<td>' + msg.time + '</td>' +
+					  '<td>' + msg.from + '</td>' +
+					  '<td>' + msg.message + '</td>' +
+					  '</tr>');
     }
 
     function setConnected(connected) {
@@ -39,7 +38,7 @@ $(function() {
 	client = Stomp.over(new SockJS('/chat'));
 	client.connect({}, function (frame) {
 	    setConnected(true);
-	    client.subscribe('/topic/messages', function (message) {
+	    client.subscribe('/messages', function (message) {
 		showMessage(JSON.parse(message.body));
 	    });
 	});
@@ -54,8 +53,7 @@ $(function() {
     });
 
     $('#send').click(function() {
-	var topic = $('#topic').val();
-	client.send("/app/chat/" + topic, {}, JSON.stringify({
+	client.send("/app/chat/", {}, JSON.stringify({
 	    from: $("#from").val(),
 	    text: $('#text').val(),
 	}));

@@ -7,7 +7,7 @@ $(function() {
     {
 		$('#messages').append('<tr>' +
 			   		  '<td>' + msg.time + '</td>' +
-					  '<td>' + msg.from + '</td>' +
+					  '<td>' + msg.username + '</td>' +
 					  '<td>' + msg.message + '</td>' +
 					  '</tr>');
     }

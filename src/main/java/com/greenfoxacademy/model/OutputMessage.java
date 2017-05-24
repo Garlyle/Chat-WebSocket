@@ -1,15 +1,8 @@
 package com.greenfoxacademy.model;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-/*
- * Output message sent to client.
- *
- * @Author Jay Sridhar
- */
 public class OutputMessage
 {
   private String from;

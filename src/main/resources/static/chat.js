@@ -22,7 +22,6 @@ $(function() {
 	    $('#text').focus();
 	}
 	else $("#conversation").hide();
-	$("#messages").html("");
     }
 
     $("form").on('submit', function (e) {

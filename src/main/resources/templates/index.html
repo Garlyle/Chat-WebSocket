@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>WebSocket Chat</title>
-    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/main.css" rel="stylesheet"/>
-    <script src="/webjars/jquery/jquery.min.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="/chat.js"></script>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/main.css}" rel="stylesheet"/>
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <script th:src="@{/chat.js}"></script>
   </head>
 <body>
   <div id="main-content" class="container">
@@ -17,7 +17,7 @@
           <div class="form-group">
             <label for="from">Name?</label>
             <input type="text" id="from" class="form-control"
-		   placeholder="enter your name...">
+		   placeholder="enter your name..."/>
           </div>
           <button id="connect"
 		  class="btn btn-default"
@@ -35,7 +35,7 @@
 	  <input type="text"
 		 id="text"
 		 class="form-control"
-		 placeholder="enter message ...">
+		 placeholder="enter message ..."/>
 	</div>
 	<div class="col-md-4">
           <button id="send"
@@ -55,6 +55,11 @@
             </tr>
           </thead>
           <tbody id="messages">
+            <tr th:each="msg : ${messages}">
+                <td th:text="${msg.time}"></td>
+                <td th:text="${msg.username}"></td>
+                <td th:text="${msg.message}"></td>
+            </tr>
           </tbody>
         </table>
       </div>

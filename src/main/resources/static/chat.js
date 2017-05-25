@@ -6,9 +6,9 @@ $(function() {
   function showMessage(msg)
   {
 	$('#messages').append('<tr>' +
-  	  '<td>' + msg.time + '</td>' +
-  	  '<td>' + msg.username + '</td>' +
-  	  '<td>' + msg.message + '</td>' +
+  	  '<td>' + msg.message.timestamp + '</td>' +
+  	  '<td>' + msg.message.username + '</td>' +
+  	  '<td>' + msg.message.text + '</td>' +
   	  '</tr>');
   }
 

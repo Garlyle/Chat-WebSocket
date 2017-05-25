@@ -27,26 +27,27 @@ public class ChatController
 
   @MessageMapping("/postMessage")
   @SendTo("/api/message/receive")
-  public OutputMessage send(Message message) throws Exception
+  public P2PDispatch send(Message message) throws Exception
   {
     OutputMessage msg = new OutputMessage(message.getFrom(), message.getText());
     repository.save(msg);
-    P2PDispatch.post(new P2PDispatch(
+    P2PDispatch dispatch = new P2PDispatch(
         new P2PMessage(message.getFrom(), message.getText()),
-        new P2PClient(System.getenv("CHAT_APP_UNIQUE_ID"))));
+        new P2PClient(System.getenv("CHAT_APP_UNIQUE_ID")));
+    P2PDispatch.post(dispatch);
 
-    return msg;
+    return dispatch;
   }
 
   @PostMapping("/api/message/receive")
-  @SendTo("/api/message/receive")
-  public OutputMessage receiveMessage(@RequestBody P2PDispatch received) {
+  public Status receiveMessage(@RequestBody P2PDispatch received) {
     OutputMessage message = new OutputMessage(received.getMessage().getUsername(), received.getMessage().getText());
+    Status status = new Status("ok");
     if (!received.getClient().getId().equals(System.getenv("CHAT_APP_UNIQUE_ID"))) {
       repository.save(message);
-      P2PDispatch.post(received);
+      status = P2PDispatch.post(received);
     }
-    return message;
+    return status;
   }
 
 }

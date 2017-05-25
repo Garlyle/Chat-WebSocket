@@ -23,8 +23,8 @@ public class ChatController
     return "index";
   }
 
-  @MessageMapping("/chat/")
-  @SendTo("/messages")
+  @MessageMapping("/postMessage")
+  @SendTo("/api/message/receive")
   public OutputMessage send(Message message) throws Exception
   {
     OutputMessage msg = new OutputMessage(message.getFrom(), message.getText());

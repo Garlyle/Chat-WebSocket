@@ -1,61 +1,61 @@
 $(function() {
-    'use strict';
+  'use strict';
 
-    var client;
+  var client;
 
-    function showMessage(msg)
-    {
-		$('#messages').append('<tr>' +
-			   		  '<td>' + msg.time + '</td>' +
-					  '<td>' + msg.username + '</td>' +
-					  '<td>' + msg.message + '</td>' +
-					  '</tr>');
+  function showMessage(msg)
+  {
+	$('#messages').append('<tr>' +
+  	  '<td>' + msg.time + '</td>' +
+  	  '<td>' + msg.username + '</td>' +
+  	  '<td>' + msg.message + '</td>' +
+  	  '</tr>');
+  }
+
+  function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    $('#from').prop('disabled', connected);
+    $('#text').prop('disabled', !connected);
+    if (connected) {
+      $("#conversation").show();
+      $('#text').focus();
     }
+    else $("#conversation").hide();
+  }
 
-    function setConnected(connected) {
-	$("#connect").prop("disabled", connected);
-	$("#disconnect").prop("disabled", !connected);
-	$('#from').prop('disabled', connected);
-	$('#text').prop('disabled', !connected);
-	if (connected) {
-	    $("#conversation").show();
-	    $('#text').focus();
-	}
-	else $("#conversation").hide();
-    }
+  $("form").on('submit', function (e) {
+	   e.preventDefault();
+  });
 
-    $("form").on('submit', function (e) {
-	e.preventDefault();
-    });
+  $('#from').on('blur change keyup', function(ev) {
+	   $('#connect').prop('disabled', $(this).val().length == 0 );
+  });
+  $('#connect,#disconnect,#text').prop('disabled', true);
 
-    $('#from').on('blur change keyup', function(ev) {
-	$('#connect').prop('disabled', $(this).val().length == 0 );
-    });
-    $('#connect,#disconnect,#text').prop('disabled', true);
+  $('#connect').click(function() {
+  	client = Stomp.over(new SockJS('/postMessage'));
+  	client.connect({}, function (frame) {
+      setConnected(true);
+      client.subscribe('/api/message/receive', function (message) {
+  	    showMessage(JSON.parse(message.body));
+      });
+  	});
+  });
 
-    $('#connect').click(function() {
-	client = Stomp.over(new SockJS('/chat'));
-	client.connect({}, function (frame) {
-	    setConnected(true);
-	    client.subscribe('/messages', function (message) {
-		showMessage(JSON.parse(message.body));
-	    });
-	});
-    });
-
-    $('#disconnect').click(function() {
-	if (client != null) {
+  $('#disconnect').click(function() {
+	  if (client != null) {
 	    client.disconnect();
 	    setConnected(false);
-	}
-	client = null;
-    });
+	  }
+    client = null;
+  });
 
-    $('#send').click(function() {
-	client.send("/app/chat/", {}, JSON.stringify({
+  $('#send').click(function() {
+	  client.send("/postMessage", {}, JSON.stringify({
 	    from: $("#from").val(),
 	    text: $('#text').val(),
-	}));
-	$('#text').val("");
-    });
+	  }));
+    $('#text').val("");
+  });
 });

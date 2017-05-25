@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +38,7 @@ public class ChatController
     return msg;
   }
 
-  @MessageMapping("/api/message/receive")
+  @PostMapping("/api/message/receive")
   @SendTo("/api/message/receive")
   public OutputMessage receiveMessage(@RequestBody P2PDispatch received) {
     OutputMessage message = new OutputMessage(received.getMessage().getUsername(), received.getMessage().getText());

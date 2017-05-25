@@ -37,7 +37,7 @@ $(function() {
   	client = Stomp.over(new SockJS('/postMessage'));
   	client.connect({}, function (frame) {
       setConnected(true);
-      client.subscribe('/api/message/receive', function (message) {
+      client.subscribe('/js/receive', function (message) {
   	    showMessage(JSON.parse(message.body));
       });
   	});

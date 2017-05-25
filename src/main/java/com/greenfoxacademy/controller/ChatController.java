@@ -24,7 +24,7 @@ public class ChatController
   }
 
   @MessageMapping("/postMessage")
-  @SendTo("/api/message/receive")
+  @SendTo("/js/receive")
   public OutputMessage send(Message message) throws Exception
   {
     OutputMessage msg = new OutputMessage(message.getFrom(), message.getText());

@@ -6,9 +6,9 @@ $(function() {
   function showMessage(msg)
   {
 	$('#messages').append('<tr>' +
-  	  '<td>' + msg.message.timestamp + '</td>' +
-  	  '<td>' + msg.message.username + '</td>' +
-  	  '<td>' + msg.message.text + '</td>' +
+  	  '<td>' + msg.time + '</td>' +
+  	  '<td>' + msg.username + '</td>' +
+  	  '<td>' + msg.message + '</td>' +
   	  '</tr>');
   }
 
@@ -34,10 +34,10 @@ $(function() {
   $('#connect,#disconnect,#text').prop('disabled', true);
 
   $('#connect').click(function() {
-  	client = Stomp.over(new SockJS('/postMessage'));
+  	client = Stomp.over(new SockJS('/chat-websocket'));
   	client.connect({}, function (frame) {
       setConnected(true);
-      client.subscribe('/api/message/receive', function (message) {
+      client.subscribe('/api/showmessage', function (message) {
   	    showMessage(JSON.parse(message.body));
       });
   	});

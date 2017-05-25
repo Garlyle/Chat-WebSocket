@@ -1,7 +1,6 @@
 package com.greenfoxacademy.controller;
 
-import com.greenfoxacademy.model.Message;
-import com.greenfoxacademy.model.OutputMessage;
+import com.greenfoxacademy.model.*;
 import com.greenfoxacademy.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -9,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class ChatController
@@ -29,8 +29,10 @@ public class ChatController
   {
     OutputMessage msg = new OutputMessage(message.getFrom(), message.getText());
     repository.save(msg);
+    P2PDispatch.post(new P2PDispatch(
+        new P2PMessage(message.getFrom(), message.getText()),
+        new P2PClient(System.getenv("CHAT_APP_UNIQUE_ID"))));
 
     return msg;
   }
 }
-
